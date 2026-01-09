@@ -1,0 +1,303 @@
+@use "sass:color";
+
+// Variables
+$primary-color: #f97316; // Orange-500
+$bg-dark: #0f172a; // Slate-900
+$bg-card: #1e293b; // Slate-800
+$text-white: #ffffff;
+$text-gray: #94a3b8; // Slate-400
+$border-color: rgba(255, 255, 255, 0.1);
+$transition: all 0.3s ease;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: $bg-dark;
+  font-family: 'Inter', sans-serif;
+  color: $text-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  // Background pattern
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba($primary-color, 0.15), transparent 40%),
+    linear-gradient(rgba($bg-dark, 0.9), $bg-dark);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 420px;
+  perspective: 1000px;
+}
+
+// Magic Card Implementation
+.magic-card {
+  position: relative;
+  background-color: rgba($bg-card, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid $border-color;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  // The Spotlight Effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 1.5rem;
+    padding: 1px; // Border width
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba($primary-color, 0.4),
+      transparent 40%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.5;
+  }
+
+  // Inner Spotlight (Background Glow)
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba($primary-color, 0.05),
+      transparent 40%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.card-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Header
+.auth-header {
+  text-align: center;
+  margin-bottom: 1rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(to right, #fff, $text-gray);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    color: $text-gray;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+// Tabs
+.auth-tabs {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+
+  button {
+    flex: 1;
+    padding: 0.625rem;
+    border: none;
+    background: transparent;
+    color: $text-gray;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: $transition;
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: $text-white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    &:hover:not(.active) {
+      color: $text-white;
+    }
+  }
+}
+
+// Form
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-gray;
+  }
+
+  .input-wrapper {
+    position: relative;
+
+    input {
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      border: 1px solid $border-color;
+      color: $text-white;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      outline: none;
+      transition: $transition;
+
+      &:focus {
+        border-color: $primary-color;
+        background-color: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 0 1px rgba($primary-color, 0.5);
+      }
+
+      &::placeholder {
+        color: color.adjust($text-gray, $lightness: -20%);
+      }
+    }
+
+    svg {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.125rem;
+      height: 1.125rem;
+      color: $text-gray;
+      transition: $transition;
+    }
+
+    input:focus + svg {
+      color: $primary-color;
+    }
+  }
+}
+
+.btn-submit {
+  margin-top: 0.5rem;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: -10%));
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: $transition;
+  box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: $text-gray;
+  font-size: 0.75rem;
+  margin: 0.5rem 0;
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: $border-color;
+  }
+}
+
+.social-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid $border-color;
+    border-radius: 0.5rem;
+    color: $text-white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}
+
+.footer-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: $text-gray;
+  margin-top: 1rem;
+
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

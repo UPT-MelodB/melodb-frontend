@@ -1,0 +1,74 @@
+<div class="history-container">
+  <header>
+    <div>
+      <h1>Order History</h1>
+      <p>Manage and view all customer orders.</p>
+    </div>
+    <button class="action-btn" style="padding: 0.75rem 1.5rem; font-size: 0.875rem;">Export Report</button>
+  </header>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="search-group">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by Order ID or Customer..."
+      >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
+
+    <div class="filter-group">
+      <label>Status:</label>
+      <select [(ngModel)]="selectedStatus">
+        <option value="All">All Statuses</option>
+        <option value="Completed">Completed</option>
+        <option value="Processing">Processing</option>
+        <option value="Pending">Pending</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Status</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of filteredOrders">
+          <td class="order-id">{{ order.id }}</td>
+          <td>{{ order.date | date:'mediumDate' }}</td>
+          <td>{{ order.customer }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+              <span class="dot"></span>
+              {{ order.status }}
+            </span>
+          </td>
+          <td>{{ order.items }}</td>
+          <td class="amount">${{ order.total | number:'1.2-2' }}</td>
+          <td>
+            <button class="action-btn">View Details</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredOrders.length === 0">
+          <td colspan="7" class="no-results">
+            No orders found matching your criteria.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

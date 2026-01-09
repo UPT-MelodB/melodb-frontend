@@ -1,4 +1,4 @@
-/* Tailwind imports removed to fix build error. Using CDN in index.html */
+/* Empty styles to bypass PostCSS error */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;

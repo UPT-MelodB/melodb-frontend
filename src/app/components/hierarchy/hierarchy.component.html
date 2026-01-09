@@ -1,0 +1,102 @@
+<div class="flex h-[calc(100vh-73px)] bg-[#0f172a] text-white overflow-hidden font-sans p-8 gap-6">
+
+  <!-- Level 1: Genres -->
+  <div class="w-1/3 bg-[#1e293b] rounded-2xl border border-white/5 flex flex-col shadow-2xl overflow-hidden">
+    <div class="p-6 border-b border-white/5 bg-white/5 backdrop-blur-sm">
+      <h2 class="text-xl font-bold text-orange-500 flex items-center gap-2">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500/20 text-orange-500 text-sm">1</span>
+        Genres
+      </h2>
+      <p class="text-xs text-gray-400 mt-1">Select a musical genre to start</p>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4 space-y-2">
+      <div
+        *ngFor="let genre of genres"
+        (click)="selectGenre(genre)"
+        class="p-4 rounded-xl cursor-pointer transition-all duration-200 flex justify-between items-center group border border-transparent"
+        [ngClass]="{'bg-orange-600 text-white shadow-lg shadow-orange-500/20': selectedGenre?.id === genre.id, 'bg-[#0f172a] hover:bg-white/5 hover:border-white/10 text-gray-300': selectedGenre?.id !== genre.id}"
+      >
+        <span class="font-semibold">{{ genre.name }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" [ngClass]="{'translate-x-1': selectedGenre?.id === genre.id, 'opacity-0 group-hover:opacity-50': selectedGenre?.id !== genre.id}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 2: Artists -->
+  <div class="w-1/3 bg-[#1e293b] rounded-2xl border border-white/5 flex flex-col shadow-2xl overflow-hidden transition-all duration-500"
+       [ngClass]="{'opacity-100 translate-x-0': selectedGenre, 'opacity-50 translate-x-4 pointer-events-none grayscale': !selectedGenre}">
+    <div class="p-6 border-b border-white/5 bg-white/5 backdrop-blur-sm">
+      <h2 class="text-xl font-bold text-orange-500 flex items-center gap-2">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500/20 text-orange-500 text-sm">2</span>
+        Artists
+      </h2>
+      <p class="text-xs text-gray-400 mt-1" *ngIf="selectedGenre">Artists in {{ selectedGenre.name }}</p>
+      <p class="text-xs text-gray-500 mt-1" *ngIf="!selectedGenre">Waiting for selection...</p>
+    </div>
+
+    <div *ngIf="!selectedGenre" class="flex-1 flex flex-col items-center justify-center text-gray-600 p-8 text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      <p>Select a genre from the left to view artists</p>
+    </div>
+
+    <div *ngIf="selectedGenre" class="flex-1 overflow-y-auto p-4 space-y-2">
+      <div
+        *ngFor="let artist of filteredArtists"
+        (click)="selectArtist(artist)"
+        class="p-4 rounded-xl cursor-pointer transition-all duration-200 border border-transparent"
+        [ngClass]="{'bg-orange-600 text-white shadow-lg shadow-orange-500/20': selectedArtist?.id === artist.id, 'bg-[#0f172a] hover:bg-white/5 hover:border-white/10 text-gray-300': selectedArtist?.id !== artist.id}"
+      >
+        <div class="font-bold text-lg">{{ artist.name }}</div>
+        <div class="text-xs opacity-75 truncate mt-1">{{ artist.bio }}</div>
+      </div>
+      <div *ngIf="filteredArtists.length === 0" class="text-gray-400 text-center mt-10 p-4 bg-white/5 rounded-lg border border-dashed border-gray-600">
+        No artists found for this genre.
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 3: Albums -->
+  <div class="w-1/3 bg-[#1e293b] rounded-2xl border border-white/5 flex flex-col shadow-2xl overflow-hidden transition-all duration-500"
+       [ngClass]="{'opacity-100 translate-x-0': selectedArtist, 'opacity-50 translate-x-4 pointer-events-none grayscale': !selectedArtist}">
+    <div class="p-6 border-b border-white/5 bg-white/5 backdrop-blur-sm">
+      <h2 class="text-xl font-bold text-orange-500 flex items-center gap-2">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500/20 text-orange-500 text-sm">3</span>
+        Albums
+      </h2>
+      <p class="text-xs text-gray-400 mt-1" *ngIf="selectedArtist">Discography of {{ selectedArtist.name }}</p>
+      <p class="text-xs text-gray-500 mt-1" *ngIf="!selectedArtist">Waiting for selection...</p>
+    </div>
+
+    <div *ngIf="!selectedArtist" class="flex-1 flex flex-col items-center justify-center text-gray-600 p-8 text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+      </svg>
+      <p>Select an artist to view their albums</p>
+    </div>
+
+    <div *ngIf="selectedArtist" class="flex-1 overflow-y-auto p-4 grid grid-cols-1 gap-4">
+      <div *ngFor="let album of filteredAlbums" class="bg-[#0f172a] rounded-xl p-3 flex gap-4 items-center hover:bg-white/5 border border-white/5 hover:border-orange-500/30 transition-all group">
+        <div class="relative w-16 h-16 rounded-lg overflow-hidden shadow-lg">
+          <img [src]="album.coverUrl" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+        </div>
+        <div>
+          <div class="font-bold text-white group-hover:text-orange-400 transition-colors">{{ album.title }}</div>
+          <div class="text-sm text-gray-400">{{ album.year }}</div>
+        </div>
+        <button class="ml-auto p-2 text-gray-500 hover:text-orange-500 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </div>
+      <div *ngIf="filteredAlbums.length === 0" class="text-gray-400 text-center mt-10 p-4 bg-white/5 rounded-lg border border-dashed border-gray-600">
+        No albums found for this artist.
+      </div>
+    </div>
+  </div>
+
+</div>

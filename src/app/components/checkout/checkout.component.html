@@ -1,0 +1,139 @@
+<div class="checkout-container">
+  <h1>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    Secure Checkout
+  </h1>
+
+  <div class="checkout-layout">
+
+    <!-- Left Column: Forms -->
+    <div class="form-column">
+
+      <!-- Shipping Information -->
+      <div class="card">
+        <h2>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Shipping Information
+        </h2>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" [(ngModel)]="shippingInfo.firstName" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" [(ngModel)]="shippingInfo.lastName" placeholder="Doe">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Email Address</label>
+          <input type="email" [(ngModel)]="shippingInfo.email" placeholder="john.doe@example.com">
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Address</label>
+          <input type="text" [(ngModel)]="shippingInfo.address" placeholder="123 Music Lane, Apt 4B">
+        </div>
+
+        <div class="form-grid" style="margin-top: 1rem;">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" [(ngModel)]="shippingInfo.city" placeholder="Bucharest">
+          </div>
+          <div class="form-group">
+            <label>Postal Code</label>
+            <input type="text" [(ngModel)]="shippingInfo.zip" placeholder="012345">
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Information -->
+      <div class="card">
+        <h2>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+          </svg>
+          Payment Details
+        </h2>
+
+        <div class="form-group">
+          <label>Cardholder Name</label>
+          <input type="text" [(ngModel)]="paymentInfo.cardName" placeholder="JOHN DOE">
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Card Number</label>
+          <input type="text" [(ngModel)]="paymentInfo.cardNumber" placeholder="0000 0000 0000 0000">
+        </div>
+
+        <div class="form-grid" style="margin-top: 1rem;">
+          <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="text" [(ngModel)]="paymentInfo.expiry" placeholder="MM/YY">
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" [(ngModel)]="paymentInfo.cvv" placeholder="123">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Order Summary -->
+    <div class="summary-column">
+      <div class="card">
+        <h2>Order Summary</h2>
+
+        <div class="cart-items">
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <img [src]="item.imageUrl" [alt]="item.name">
+            <div class="item-details">
+              <h4>{{ item.name }}</h4>
+              <p *ngIf="item.artist">{{ item.artist }}</p>
+              <p>Qty: {{ item.quantity }}</p>
+            </div>
+            <div class="item-price">${{ item.price * item.quantity }}</div>
+          </div>
+        </div>
+
+        <div class="summary-totals">
+          <div class="row">
+            <span>Subtotal</span>
+            <span>${{ subtotal }}</span>
+          </div>
+          <div class="row">
+            <span>Shipping</span>
+            <span>{{ shippingCost === 0 ? 'Free' : '$' + shippingCost }}</span>
+          </div>
+          <div class="row total">
+            <span>Total</span>
+            <span>${{ total }}</span>
+          </div>
+        </div>
+
+        <button class="checkout-btn" (click)="placeOrder()">
+          Complete Order
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+
+        <div class="secure-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          Encrypted & Secure Payment
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

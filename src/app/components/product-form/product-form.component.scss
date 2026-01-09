@@ -1,0 +1,243 @@
+@use "sass:color";
+
+// Variables
+$primary-color: #f97316; // Orange-500
+$bg-dark: #0f172a; // Slate-900
+$bg-card: #1e293b; // Slate-800
+$text-white: #ffffff;
+$text-gray: #94a3b8; // Slate-400
+$border-color: rgba(255, 255, 255, 0.1);
+$transition: all 0.3s ease;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: $bg-dark;
+  font-family: 'Inter', sans-serif;
+  color: $text-white;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+
+  header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem 0;
+      color: $text-white;
+    }
+
+    p {
+      color: $text-gray;
+      font-size: 1rem;
+    }
+  }
+}
+
+.product-form-card {
+  background-color: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-gray;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  input, select, textarea {
+    background-color: color.adjust($bg-dark, $lightness: -2%);
+    border: 1px solid $border-color;
+    color: $text-white;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    transition: $transition;
+    font-family: inherit;
+
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 1px $primary-color;
+    }
+
+    &::placeholder {
+      color: color.adjust($text-gray, $lightness: -20%);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+// Image Upload Area
+.image-upload-area {
+  border: 2px dashed $border-color;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba($bg-dark, 0.5);
+  transition: $transition;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  &:hover {
+    border-color: $primary-color;
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  .icon-box {
+    width: 3rem;
+    height: 3rem;
+    background-color: $bg-card;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-gray;
+  }
+
+  p {
+    margin: 0;
+    color: $text-gray;
+    font-size: 0.9rem;
+
+    span {
+      color: $primary-color;
+      font-weight: 600;
+    }
+  }
+}
+
+// Toggles
+.toggles-row {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
+}
+
+.toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 2.5rem;
+    height: 1.5rem;
+    background-color: $bg-dark;
+    border-radius: 9999px;
+    position: relative;
+    cursor: pointer;
+    transition: $transition;
+    border: 1px solid $border-color;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: calc(1.5rem - 6px);
+      height: calc(1.5rem - 6px);
+      background-color: $text-gray;
+      border-radius: 50%;
+      transition: $transition;
+    }
+
+    &:checked {
+      background-color: $primary-color;
+      border-color: $primary-color;
+
+      &::after {
+        transform: translateX(100%);
+        background-color: white;
+      }
+    }
+  }
+
+  span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-white;
+  }
+}
+
+// Actions
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: $transition;
+    border: none;
+
+    &.btn-cancel {
+      background-color: transparent;
+      color: $text-gray;
+      border: 1px solid $border-color;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: $text-white;
+      }
+    }
+
+    &.btn-submit {
+      background-color: $primary-color;
+      color: white;
+
+      &:hover {
+        background-color: color.adjust($primary-color, $lightness: -5%);
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
