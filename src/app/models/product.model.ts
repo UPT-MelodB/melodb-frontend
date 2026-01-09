@@ -1,10 +1,9 @@
 export interface Product {
   id: number;
-  name: string;
+  title: string;
   artist: string;
-  category: string;
+  format: string;
   price: number;
-  stock: number;
-  description?: string;
-  imageUrl?: string;
+  imageUrl: string;
+  category: string;
 }

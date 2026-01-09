@@ -1,0 +1,24 @@
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+.magic-card {
+  --x: 50%;
+  --y: 50%;
+  
+  &:hover {
+    box-shadow: 0 0 30px -10px rgba(249, 115, 22, 0.3);
+  }
+}
+
+#scroll-progress {
+  transition: transform 0.1s ease-out;
+}
