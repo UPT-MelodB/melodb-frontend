@@ -1,15 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl: string;
-  artist?: string;
-}
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -19,24 +11,7 @@ interface CartItem {
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent {
-  // Mock Cart Data
-  cartItems: CartItem[] = [
-    {
-      id: 1,
-      name: 'Fender Stratocaster American Pro',
-      price: 1499,
-      quantity: 1,
-      imageUrl: 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?auto=format&fit=crop&q=80&w=150&h=150'
-    },
-    {
-      id: 2,
-      name: 'Abbey Road - The Beatles',
-      price: 35,
-      quantity: 2,
-      imageUrl: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?auto=format&fit=crop&q=80&w=150&h=150',
-      artist: 'The Beatles'
-    }
-  ];
+  cartService = inject(CartService);
 
   // Form Data
   shippingInfo = {
@@ -56,20 +31,33 @@ export class CheckoutComponent {
     cvv: ''
   };
 
-  get subtotal(): number {
-    return this.cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  get cartItems() {
+    return this.cartService.items();
   }
 
-  get shippingCost(): number {
+  get subtotal() {
+    return this.cartService.subtotal();
+  }
+
+  get shippingCost() {
     return this.subtotal > 500 ? 0 : 25;
   }
 
-  get total(): number {
+  get total() {
     return this.subtotal + this.shippingCost;
   }
 
+  removeItem(id: number) {
+    this.cartService.removeFromCart(id);
+  }
+
   placeOrder() {
-    alert('Order placed successfully! (Mock)');
+    if (this.cartItems.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    alert('Order placed successfully!');
     console.log('Order Data:', { shipping: this.shippingInfo, payment: this.paymentInfo, items: this.cartItems });
+    this.cartService.clearCart();
   }
 }

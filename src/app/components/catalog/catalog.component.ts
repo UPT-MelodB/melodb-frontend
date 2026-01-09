@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../../models/product.model';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-catalog',
@@ -11,6 +12,8 @@ import { Product } from '../../models/product.model';
   styleUrls: ['./catalog.component.scss']
 })
 export class CatalogComponent {
+  private cartService = inject(CartService);
+
   searchTerm: string = '';
   selectedCategory: string = 'All';
 
@@ -105,5 +108,11 @@ export class CatalogComponent {
       return product.price - (product.price * product.discount / 100);
     }
     return product.price;
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
+    // Optional: Add a toast notification here
+    console.log('Added to cart:', product.name);
   }
 }
