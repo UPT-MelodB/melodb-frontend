@@ -1,6 +1,7 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -11,13 +12,16 @@ import { FormsModule } from '@angular/forms';
 })
 export class AuthComponent implements AfterViewInit {
   @ViewChild('magicCard') magicCard!: ElementRef<HTMLElement>;
+  private authService = inject(AuthService);
 
   isLoginMode = true;
 
   formData = {
     email: '',
     password: '',
-    name: ''
+    confirmPassword: '',
+    firstName: '',
+    lastName: ''
   };
 
   ngAfterViewInit() {
@@ -43,11 +47,37 @@ export class AuthComponent implements AfterViewInit {
 
   onSubmit() {
     if (this.isLoginMode) {
-      console.log('Logging in...', this.formData);
-      alert('Login successful! (Mock)');
+      this.authService.login({ email: this.formData.email, password: this.formData.password })
+        .subscribe({
+          next: () => {
+            console.log('Login successful');
+          },
+          error: (err) => {
+            console.error('Login failed', err);
+            alert('Login failed: ' + (err.error?.message || 'Unknown error'));
+          }
+        });
     } else {
-      console.log('Registering...', this.formData);
-      alert('Registration successful! (Mock)');
+      if (this.formData.password !== this.formData.confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+
+      this.authService.register({
+        email: this.formData.email,
+        password: this.formData.password,
+        confirmPassword: this.formData.confirmPassword,
+        firstName: this.formData.firstName,
+        lastName: this.formData.lastName
+      }).subscribe({
+          next: () => {
+            console.log('Registration successful');
+          },
+          error: (err) => {
+            console.error('Registration failed', err);
+            alert('Registration failed: ' + (err.error?.message || 'Unknown error'));
+          }
+        });
     }
   }
 }

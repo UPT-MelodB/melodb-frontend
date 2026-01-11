@@ -2,12 +2,21 @@ import { Injectable, signal, inject } from '@angular/core';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { HttpHeaders } from '@angular/common/http';
 
 export interface User {
   id: string;
   name: string;
   email: string;
   role: 'user' | 'admin';
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
 }
 
 @Injectable({
@@ -27,12 +36,12 @@ export class AuthService {
     if (token) {
       // In a real app, validate token or fetch user profile
       this.isAuthenticated.set(true);
-      this.currentUser.set({ id: '1', name: 'Returning User', email: 'user@example.com', role: 'user' });
+      // We might want to fetch the user details here if the token is valid
     }
   }
 
   login(credentials: { email: string; password: string }) {
-    return this.api.post<{ token: string, user: User }>('auth/login', credentials).pipe(
+    return this.api.post<{ token: string, user: User }>('Auth/Login', credentials).pipe(
       tap(response => {
         if (response.token) {
           this.setSession(response);
@@ -41,8 +50,12 @@ export class AuthService {
     );
   }
 
-  register(data: { name: string; email: string; password: string }) {
-    return this.api.post<{ token: string, user: User }>('auth/register', data).pipe(
+  register(data: RegisterRequest) {
+    const headers = new HttpHeaders({
+      'X-Auth-Path-Prefix': '/'
+    });
+
+    return this.api.post<{ token: string, user: User }>('Auth/Register', data, { headers }).pipe(
       tap(response => {
         if (response.token) {
           this.setSession(response);
