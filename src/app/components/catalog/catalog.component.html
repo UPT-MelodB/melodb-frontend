@@ -40,11 +40,11 @@
       <label>Categories</label>
       <div class="category-list">
         <button
-          *ngFor="let cat of ['All', 'Instrument', 'Vinyl', 'Merch']"
+          *ngFor="let cat of ['All', 'Instrument', 'Music', 'Merch']"
           (click)="selectedCategory = cat"
           [class.active]="selectedCategory === cat"
         >
-          {{ cat === 'All' ? 'All Products' : cat + 's' }}
+          {{ cat === 'All' ? 'All Products' : cat }}
           <svg *ngIf="selectedCategory === cat" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
           </svg>
@@ -120,7 +120,7 @@
       <div class="hero-overlay"></div>
 
       <div class="hero-text">
-        <span class="badge">✨ NEW COLLECTION 2024</span>
+        <span class="badge">✨ NEW COLLECTION 2026</span>
         <h1>Discover Your Sound</h1>
         <p>Premium instruments, rare vinyls, and exclusive merchandise for the true audiophile.</p>
       </div>
@@ -130,7 +130,7 @@
     <div class="products-section">
       <div class="section-header">
         <h2>
-          {{ selectedCategory === 'All' ? 'Trending Now' : selectedCategory + 's' }}
+          {{ selectedCategory === 'All' ? 'Trending Now' : selectedCategory }}
         </h2>
         <span class="results-count">{{ filteredProducts.length }} results found</span>
       </div>

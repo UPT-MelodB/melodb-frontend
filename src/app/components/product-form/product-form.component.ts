@@ -20,7 +20,7 @@ export class ProductFormComponent {
     isNew: false
   };
 
-  categories = ['Instrument', 'Vinyl', 'Merch', 'Accessory'];
+  categories = ['Instrument', 'Music', 'Merch'];
 
   onSubmit() {
     console.log('Product Submitted:', this.product);
