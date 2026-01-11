@@ -1,0 +1,53 @@
+<div class="dialog-overlay" (click)="onClose()">
+  <div class="dialog-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="onClose()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="product-details" *ngIf="product">
+      <div class="image-section">
+        <img [src]="product.imageUrl" [alt]="product.name">
+      </div>
+
+      <div class="info-section">
+        <div class="header">
+          <span class="category">{{ product.category }}</span>
+          <h2>{{ product.name }}</h2>
+          <p class="artist" *ngIf="product.artist">{{ product.artist }}</p>
+        </div>
+
+        <div class="description">
+          <h3>Description</h3>
+          <p>{{ product.description }}</p>
+        </div>
+
+        <div class="meta-info">
+          <div class="stock-status" [class.in-stock]="product.inStock" [class.out-of-stock]="!product.inStock">
+            <span class="dot"></span>
+            {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+            <span *ngIf="product.inStock && product.stockQuantity" class="quantity">({{ product.stockQuantity }} available)</span>
+          </div>
+          <div class="genre" *ngIf="product.genre">
+            <span class="label">Genre:</span> {{ product.genre }}
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="price-tag">
+            <span *ngIf="product.discount" class="original">${{ product.price }}</span>
+            <span class="current">${{ getDiscountedPrice(product) | number:'1.0-0' }}</span>
+          </div>
+
+          <button class="add-cart-btn" (click)="onAddToCart()" [disabled]="!product.inStock">
+            Add to Cart
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

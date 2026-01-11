@@ -1,0 +1,229 @@
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.dialog-content {
+  background-color: #1f2937; /* gray-800 */
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid #374151; /* gray-700 */
+  animation: slideUp 0.3s ease-out;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+}
+
+.product-details {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.image-section {
+  background-color: #111827; /* gray-900 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 300px;
+
+  img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.info-section {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  .category {
+    color: #f97316; /* orange-500 */
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.1;
+  }
+
+  .artist {
+    font-size: 1.25rem;
+    color: #d1d5db; /* gray-300 */
+    margin: 0;
+  }
+}
+
+.description {
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e5e7eb; /* gray-200 */
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #9ca3af; /* gray-400 */
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid #374151;
+  border-bottom: 1px solid #374151;
+
+  .stock-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+
+    &.in-stock {
+      color: #34d399; /* emerald-400 */
+      .dot { background-color: #34d399; }
+    }
+
+    &.out-of-stock {
+      color: #ef4444; /* red-500 */
+      .dot { background-color: #ef4444; }
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .quantity {
+      color: #6b7280; /* gray-500 */
+      font-weight: 400;
+      font-size: 0.875rem;
+    }
+  }
+
+  .genre {
+    color: #9ca3af;
+    .label {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+  }
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  .price-tag {
+    display: flex;
+    flex-direction: column;
+
+    .original {
+      text-decoration: line-through;
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+
+    .current {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+    }
+  }
+
+  .add-cart-btn {
+    flex: 1;
+    background-color: #f97316;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: #ea580c;
+    }
+
+    &:disabled {
+      background-color: #4b5563;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

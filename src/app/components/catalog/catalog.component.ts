@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
+import { ProductDialogComponent } from '../product-dialog/product-dialog.component';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ProductDialogComponent],
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.scss']
 })
@@ -20,11 +21,11 @@ export class CatalogComponent implements OnInit {
   selectedCategory: string = 'All';
 
   products: Product[] = [];
+  selectedProduct: Product | null = null;
 
   ngOnInit() {
     this.productService.getProducts().subscribe({
       next: (data) => {
-        console.log(data);
         this.products = data;
       },
       error: (err) => {
@@ -53,5 +54,19 @@ export class CatalogComponent implements OnInit {
     this.cartService.addToCart(product);
     // Optional: Add a toast notification here
     console.log('Added to cart:', product.name);
+    // Close dialog if open
+    this.closeProductDialog();
+  }
+
+  openProductDialog(product: Product) {
+    this.selectedProduct = product;
+    // Prevent body scrolling when dialog is open
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeProductDialog() {
+    this.selectedProduct = null;
+    // Restore body scrolling
+    document.body.style.overflow = 'auto';
   }
 }
