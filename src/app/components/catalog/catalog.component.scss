@@ -87,6 +87,40 @@ $transition: all 0.3s ease;
     }
   }
 
+  .select-wrapper {
+    position: relative;
+
+    select {
+      width: 100%;
+      background-color: $bg-dark;
+      color: $text-white;
+      border: 1px solid $border-color;
+      border-radius: 0.5rem;
+      padding: 0.75rem 2.5rem 0.75rem 1rem;
+      font-size: 0.875rem;
+      outline: none;
+      appearance: none;
+      cursor: pointer;
+      transition: $transition;
+
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 1px $primary-color;
+      }
+    }
+
+    .select-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1rem;
+      height: 1rem;
+      color: $text-gray;
+      pointer-events: none;
+    }
+  }
+
   .category-list {
     display: flex;
     flex-direction: column;
@@ -118,6 +152,189 @@ $transition: all 0.3s ease;
         color: $text-white;
         box-shadow: 0 4px 12px rgba($primary-color, 0.3);
       }
+    }
+  }
+
+  .genre-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-top: 0.5rem;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+
+    .genre-item {
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem; // Spacing between checkbox and text
+        cursor: pointer;
+        user-select: none;
+        padding: 0.25rem 0;
+
+        input {
+          display: none;
+        }
+
+        .checkmark {
+          width: 18px;
+          height: 18px;
+          border: 2px solid $text-gray;
+          border-radius: 4px;
+          position: relative;
+          transition: $transition;
+          flex-shrink: 0;
+
+          &::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1px;
+            width: 4px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) scale(0);
+            transition: $transition;
+          }
+        }
+
+        input:checked ~ .checkmark {
+          background-color: $primary-color;
+          border-color: $primary-color;
+
+          &::after {
+            transform: rotate(45deg) scale(1);
+          }
+        }
+
+        .genre-name {
+          font-size: 0.875rem;
+          color: $text-gray;
+          transition: $transition;
+        }
+
+        &:hover .genre-name {
+          color: $text-white;
+        }
+
+        input:checked ~ .genre-name {
+          color: $text-white;
+        }
+      }
+    }
+  }
+
+  .price-range-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .price-inputs {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+
+      .price-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 48%;
+
+        span {
+          font-size: 0.7rem;
+          color: $text-gray;
+          text-transform: uppercase;
+        }
+
+        input {
+          width: 100%;
+          background-color: $bg-dark;
+          border: 1px solid $border-color;
+          border-radius: 0.25rem;
+          color: $text-white;
+          padding: 0.25rem 0.5rem;
+          font-size: 0.875rem;
+          outline: none;
+
+          &:focus {
+            border-color: $primary-color;
+          }
+        }
+      }
+    }
+
+    .range-slider {
+      position: relative;
+      width: 100%;
+      height: 20px;
+      margin-top: 0.5rem;
+
+      input[type="range"] {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        background: none;
+        pointer-events: none;
+        -webkit-appearance: none;
+        z-index: 2;
+        top: 50%;
+        transform: translateY(-50%);
+
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: $primary-color;
+          cursor: pointer;
+          pointer-events: auto;
+          border: 2px solid $bg-card;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        &::-moz-range-thumb {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: $primary-color;
+          cursor: pointer;
+          pointer-events: auto;
+          border: 2px solid $bg-card;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+      }
+
+      .slider-track {
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+      }
+    }
+
+    .price-display {
+      text-align: center;
+      font-size: 0.875rem;
+      color: $text-white;
+      font-weight: 600;
     }
   }
 }

@@ -18,6 +18,23 @@
       </div>
     </div>
 
+    <!-- Sort By Section -->
+    <div class="filter-section">
+      <label>Sort By</label>
+      <div class="select-wrapper">
+        <select [(ngModel)]="sortBy">
+          <option value="featured">Featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
+        </select>
+        <svg xmlns="http://www.w3.org/2000/svg" class="select-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+
     <!-- Categories Section -->
     <div class="filter-section">
       <label>Categories</label>
@@ -32,6 +49,63 @@
             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
           </svg>
         </button>
+      </div>
+    </div>
+
+    <!-- Price Range Section -->
+    <div class="filter-section">
+      <label>Price Range</label>
+      <div class="price-range-container">
+        <div class="price-inputs">
+          <div class="price-field">
+            <span>Min</span>
+            <input type="number" [(ngModel)]="selectedMinPrice" [min]="minPrice" [max]="selectedMaxPrice">
+          </div>
+          <div class="price-field">
+            <span>Max</span>
+            <input type="number" [(ngModel)]="selectedMaxPrice" [min]="selectedMinPrice" [max]="maxPrice">
+          </div>
+        </div>
+
+        <div class="range-slider">
+          <input
+            type="range"
+            [(ngModel)]="selectedMinPrice"
+            [min]="minPrice"
+            [max]="maxPrice"
+            class="range-min"
+          >
+          <input
+            type="range"
+            [(ngModel)]="selectedMaxPrice"
+            [min]="minPrice"
+            [max]="maxPrice"
+            class="range-max"
+          >
+          <div class="slider-track"></div>
+        </div>
+
+        <div class="price-display">
+          ${{ selectedMinPrice }} - ${{ selectedMaxPrice }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Genres Section -->
+    <div class="filter-section">
+      <label>Genres</label>
+      <div class="genre-list">
+        <div *ngFor="let genre of genres" class="genre-item">
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              [checked]="selectedGenres.has(genre.name)"
+              (change)="toggleGenre(genre.name)"
+            >
+            <span class="checkmark"></span>
+            <span class="genre-name">{{ genre.name }}</span>
+          </label>
+        </div>
       </div>
     </div>
   </aside>
@@ -83,8 +157,10 @@
             <!-- Quick Action Overlay -->
             <div class="quick-actions" *ngIf="product.inStock">
               <button (click)="$event.stopPropagation(); addToCart(product)" title="Add to Cart">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
               </button>
               <button (click)="$event.stopPropagation()" title="Add to Wishlist">
@@ -115,12 +191,12 @@
                 <span *ngIf="product.discount" class="original">${{ product.price }}</span>
                 <span class="current">${{ getDiscountedPrice(product) | number:'1.0-0' }}</span>
               </div>
-              <button class="details-btn" (click)="$event.stopPropagation(); addToCart(product)">
-                Add to Cart
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
+<!--              <button class="details-btn" (click)="$event.stopPropagation(); addToCart(product)">-->
+<!--                Add to Cart-->
+<!--                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">-->
+<!--                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />-->
+<!--                </svg>-->
+<!--              </button>-->
             </div>
           </div>
         </div>
@@ -135,7 +211,7 @@
         </div>
         <h3>No products found</h3>
         <p>We couldn't find any products matching your search criteria. Try adjusting your filters or search term.</p>
-        <button (click)="searchTerm = ''; selectedCategory = 'All'">
+        <button (click)="searchTerm = ''; selectedCategory = 'All'; selectedGenres.clear(); selectedMinPrice = minPrice; selectedMaxPrice = maxPrice; sortBy = 'featured'">
           Clear Filters
         </button>
       </div>
