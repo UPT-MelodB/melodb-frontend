@@ -1,5 +1,5 @@
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -12,4 +12,7 @@ export interface Product {
   isNew?: boolean;
   discount?: number; // Procent reducere
   inStock?: boolean;
+  stockQuantity?: number;
+  type?: string;
+  image?: string;
 }

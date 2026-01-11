@@ -47,7 +47,7 @@ export class CheckoutComponent {
     return this.subtotal + this.shippingCost;
   }
 
-  removeItem(id: number) {
+  removeItem(id: string) {
     this.cartService.removeFromCart(id);
   }
 

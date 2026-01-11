@@ -46,11 +46,11 @@ export class CartService {
     });
   }
 
-  removeFromCart(productId: number) {
+  removeFromCart(productId: string) {
     this.cartItems.update(items => items.filter(item => item.id !== productId));
   }
 
-  updateQuantity(productId: number, quantity: number) {
+  updateQuantity(productId: string, quantity: number) {
     if (quantity <= 0) {
       this.removeFromCart(productId);
       return;
